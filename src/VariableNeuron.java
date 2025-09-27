@@ -11,12 +11,15 @@ public class VariableNeuron { //For neurons
     List<Double> newWeights = new ArrayList<>(); //new weights for forget, mutate and remember
     List<Double> output = new ArrayList<>(); //Output before activation function
     void Initialize() { //Add waits and bias
+        Weights.clear();
+        double limit = 1.0 / Math.sqrt(input.size());
         for (Double weight : input) {
-            Weights.add(random.nextDouble(-1, 1)); //equal number of weights as inputs
+            Weights.add((random.nextDouble(-1, 1) * 2 * limit) - limit); //equal number of weights as inputs
         }
 
     }
     Double compute() {
+        output.clear();
        for (int i = 0; i < input.size(); i++) {
            output.add(input.get(i) * Weights.get(i)); //multiplies nth input by nth weight
        }
@@ -31,10 +34,12 @@ public class VariableNeuron { //For neurons
     void mutate() {
         newBias = random.nextDouble(-1, 1);
         double factorOfChange = random.nextDouble(-1, 1);
-        for (Double i : Weights) {
-            Double newVal = random.nextDouble(-1,  1); //For mutate, remember and forget
-            newWeights.add(newWeights.indexOf(i), newVal);
+        newWeights.clear();
+        for (int j = 0; j < Weights.size(); j++) {
+            double newVal = random.nextDouble(-1, 1);
+            newWeights.add(newVal);
         }
+
 
         boolean biasOrNot = random.nextBoolean(); //chooses to change bias or weights. sorry for the variable names, I couldn't think of anything better.
         if (biasOrNot) {
