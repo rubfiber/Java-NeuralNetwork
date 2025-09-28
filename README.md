@@ -1,8 +1,7 @@
-<h1 class="Title">A simple Neural Network</h1>
-<h2 class="text">-Written in Java-</h2>
-<p class="text">
+# A simple Neural Network
+## Written in Java
+
 This is an incredibly simple neural network. More coming soon, maybe.
-</p>
 
 # Installation
 
