@@ -3,3 +3,12 @@
 <p class="text">
 This is an incredibly simple neural network. More coming soon, maybe.
 </p>
+<h2>
+  Installation
+</h2>
+#Installation
+
+###Clone repo
+```bash
+git clone https://github.com/rubfiber/Java-NeuralNetwork
+```
