@@ -6,6 +6,6 @@ This is an incredibly simple neural network. More coming soon, maybe.
 # Installation
 
 ### Clone repo
-``` bash
+```bash
 git clone https://github.com/rubfiber/Java-NeuralNetwork
 ```
