@@ -13,7 +13,7 @@ public class VariableNeuron { //For neurons
     void Initialize() { //Add waits and bias
         Weights.clear();
         double limit = 1.0 / Math.sqrt(input.size());
-        for (Double weight : input) {
+        for (Double ignored : input) { //my ide told me to rename this to ignored
             Weights.add((random.nextDouble(-1, 1) * 2 * limit) - limit); //equal number of weights as inputs
         }
 
