@@ -16,6 +16,15 @@ public class VariableNetwork {
     Double[] hiddenLayerDoubles;
     Double[] outputLayerDoubles;
 
+    /**
+     *
+     * @param inputLayer The input layer size
+     * @param outputLayer The output layer size
+     * @param hiddenLayersWidth The width of the hidden layers
+     * @param hiddenLayersDepth The depth of the hidden layers
+     * @param input The input of the network - must be the same ize as the number of input neurons
+     */
+    //TODO: make the input parameter take a list that can have the size of any multiple of the number of input neurons
     VariableNetwork(int inputLayer, int outputLayer, int hiddenLayersWidth, int hiddenLayersDepth, Double[] input) {
         this.inputLayer = inputLayer;
         this.outputLayer = outputLayer;
@@ -35,8 +44,6 @@ public class VariableNetwork {
         }
         for (int i = 0; i < outputLayer; i++) {
             OutputLayerList.add(new VariableNeuron());
-            OutputLayerList.get(i).input.add(publicInput.get(i));
-            OutputLayerList.get(i).Initialize();
         }
         FullNetwork.addAll(InputLayerList);
         FullNetwork.addAll(HiddenLayerList);
