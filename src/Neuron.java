@@ -2,42 +2,52 @@ import java.util.Random;
 
 public class Neuron { //For neurons
     Random randomDouble = new Random(); //for doubles
-    public Double weightA = randomDouble.nextDouble(-1, 1); //new double from -1 to 1
-    public Double weightB = randomDouble.nextDouble(-1, 1);
-    public Double weightC = randomDouble.nextDouble(-1, 1);
+    public Double weight1 = randomDouble.nextDouble(-1, 1); //new double from -1 to 1
+    public Double weight2 = randomDouble.nextDouble(-1, 1);
+    public Double weight3 = randomDouble.nextDouble(-1, 1);
     public Double bias = randomDouble.nextDouble(-1, 1); //bias value
-    public double compute(double inputA, double inputB, double inputC) { //compute the output of the neuron
-        double weightedSum = weightA * inputA + weightB * inputB + weightC * inputC + bias;//weighted sum
+    public double compute(double input1, double input2, double input3) { //compute the output of the neuron
+        double weightedSum = weight1 * input1 + weight2 * input2 + weight3 * input3 + bias;//weighted sum
         return 1/(1+Math.exp(-weightedSum)); //sigmoid activation function
 
     }
-    public double newWeightA = randomDouble.nextDouble(-1, 1);
-    public double newWeightB = randomDouble.nextDouble(-1, 1);
-    public double newWeightC = randomDouble.nextDouble(-1, 1);
+    public double getWeight1() {return weight1;}
+    public double getWeight2() {return weight2;}
+    public double getWeight3() {return weight3;}
+    public void setWeight1(double newVal) {weight1 = newVal;}
+    public void setWeight2(double newVal) {weight2 = newVal;}
+    public void setWeight3(double newVal) {weight3 = newVal;}
+
+    public double newWeight1 = randomDouble.nextDouble(-1, 1);
+    public double newWeight2 = randomDouble.nextDouble(-1, 1);
+    public double newWeight3 = randomDouble.nextDouble(-1, 1);
     public double newBias = randomDouble.nextDouble(-1, 1);
+    @Deprecated //don't use anything below this comment cuz it's pretty bad
     public void mutate() {
         int mutateProperty = randomDouble.nextInt(0, 5);
         double factorOfChange = randomDouble.nextDouble(-1, 1);
         if (mutateProperty == 0) {
             newBias += factorOfChange;
         } else if (mutateProperty == 1) {
-            newWeightA += factorOfChange;
+            newWeight1 += factorOfChange;
         } else if (mutateProperty == 2) {
-            newWeightB += factorOfChange;
+            newWeight2 += factorOfChange;
         } else {
-            newWeightC += factorOfChange;
+            newWeight3 += factorOfChange;
         }
     }
+    @Deprecated
     public void forget() {
         newBias = bias;
-        newWeightA = weightA;
-        newWeightB = weightB;
-        newWeightC = weightC;
+        newWeight1 = weight1;
+        newWeight2 = weight2;
+        newWeight3 = weight3;
     }
+    @Deprecated
     public void Remember() {
         bias = newBias;
-        weightA = newWeightA;
-        weightB = newWeightB;
-        weightC = newWeightC;
+        weight1 = newWeight1;
+        weight2 = newWeight2;
+        weight3 = newWeight3;
     }
 }
