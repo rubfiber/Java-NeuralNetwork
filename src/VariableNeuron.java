@@ -31,6 +31,7 @@ public class VariableNeuron { //For neurons
         return (sum < 0) ? 0.01 * sum : sum;
     }
     double newBias;
+    @Deprecated
     void mutate() {
         newBias = random.nextDouble(-1, 1);
         double factorOfChange = random.nextDouble(-1, 1);
@@ -52,10 +53,12 @@ public class VariableNeuron { //For neurons
         }
 
     }
+    @Deprecated
     void forget() { //if the new value was worse than the old, restore the old value
         newBias = bias;
         newWeights = Weights;
     }
+    @Deprecated
     void remember() { //if the new value is better than the old, keep it
         bias = newBias;
         Weights = newWeights;
