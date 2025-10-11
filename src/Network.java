@@ -13,7 +13,7 @@ class Network {
     );
     List<Neuron> outputLayer = Arrays.asList(
             new Neuron(), new Neuron(), new Neuron()); //output
-    static List<Neuron> NeuronNetwork = new ArrayList<>();
+    List<Neuron> NeuronNetwork = new ArrayList<>();
     Network() { //add them together
         NeuronNetwork.addAll(inputComputeLayer);
         NeuronNetwork.addAll(hiddenLayer);
@@ -42,7 +42,7 @@ class Network {
         double n11 = NeuronNetwork.get(11).compute(n6, n7, n8);
 
 // Output
-        return Arrays.asList(NeuronNetwork.get(12).compute(n9, n10, n11), NeuronNetwork.get(13).compute(n9, n10, n11), NeuronNetwork.get(14).compute(n9, n10, n11));
+        return Arrays.asList(n9, n10, n11);
     }
     public void train(List<List<Double>> values, List<List<Double>> answers) {
      /*  Double bestLossEpoch = null;
