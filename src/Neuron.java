@@ -2,10 +2,10 @@ import java.util.Random;
 
 public class Neuron { //For neurons
     Random randomDouble = new Random(); //for doubles
-    public Double weight1 = randomDouble.nextDouble(-1, 1); //new double from -1 to 1
-    public Double weight2 = randomDouble.nextDouble(-1, 1);
-    public Double weight3 = randomDouble.nextDouble(-1, 1);
-    public Double bias = randomDouble.nextDouble(-1, 1); //bias value
+    private Double weight1 = randomDouble.nextDouble(-1, 1); //new double from -1 to 1
+    private Double weight2 = randomDouble.nextDouble(-1, 1);
+    private Double weight3 = randomDouble.nextDouble(-1, 1);
+    private Double bias = randomDouble.nextDouble(-1, 1); //bias value
     public double compute(double input1, double input2, double input3) { //compute the output of the neuron
         double weightedSum = weight1 * input1 + weight2 * input2 + weight3 * input3 + bias;//weighted sum
         return 1/(1+Math.exp(-weightedSum)); //sigmoid activation function
@@ -18,10 +18,10 @@ public class Neuron { //For neurons
     public void setWeight2(double newVal) {weight2 = newVal;}
     public void setWeight3(double newVal) {weight3 = newVal;}
 
-    public double newWeight1 = randomDouble.nextDouble(-1, 1);
-    public double newWeight2 = randomDouble.nextDouble(-1, 1);
-    public double newWeight3 = randomDouble.nextDouble(-1, 1);
-    public double newBias = randomDouble.nextDouble(-1, 1);
+    private double newWeight1 = randomDouble.nextDouble(-1, 1);
+    private double newWeight2 = randomDouble.nextDouble(-1, 1);
+    private double newWeight3 = randomDouble.nextDouble(-1, 1);
+    private double newBias = randomDouble.nextDouble(-1, 1);
     @Deprecated //don't use anything below this comment cuz it's pretty bad
     public void mutate() {
         int mutateProperty = randomDouble.nextInt(0, 5);
