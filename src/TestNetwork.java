@@ -26,11 +26,9 @@ public class TestNetwork extends Network {
                 List<Double> networkOutput = this.forwardPass();
 
                 // Output layer error and delta
-                List<Double> error = new ArrayList<>();
                 List<Double> outputDelta = new ArrayList<>();
                 for (int i = 0; i < networkOutput.size(); i++) {
                     double e = networkOutput.get(i) - answers.get(randomAnswer).get(i);
-                    error.add(e);
                     outputDelta.add(e * networkOutput.get(i) * (1 - networkOutput.get(i)));
                 }
 
