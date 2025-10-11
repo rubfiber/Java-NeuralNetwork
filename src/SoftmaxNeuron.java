@@ -1,9 +1,8 @@
-import java.sql.Array;
 @Deprecated
 public class SoftmaxNeuron extends Neuron{
     @Override
-    public double compute(double inputA, double inputB, double inputC) {
-        double[] inputArray = new double[]{inputA, inputB, inputC};
+    public double compute(double input1, double input2, double input3) {
+        double[] inputArray = new double[]{input1, input2, input3};
         double sum = 0d;
         for (double i : calculateSoftmax(inputArray)) {
              sum += i;
