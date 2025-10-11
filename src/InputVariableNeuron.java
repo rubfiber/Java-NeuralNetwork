@@ -8,6 +8,6 @@ public class InputVariableNeuron extends VariableNeuron {
 
     @Override
     Double compute() {
-        return input.get(0); // safer than getFirst()
+        return input.getFirst(); // safer than getFirst()
     }
 }
