@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Example {
     public static void main(String[] args) {
-        Network neuralNetwork = new Network();
+        TestNetwork neuralNetwork = new TestNetwork();
 
         List<Double> RobotPrediction = neuralNetwork.predict(0.3, 0.234, 0.938); //Based on distances from objects near a robot's left, right, and center, determine if it is a good idea to turn left, right or not turn at all
         System.out.println("Random prediction for Robot: " + RobotPrediction);
@@ -27,7 +27,7 @@ public class Example {
         RobotAnswers.add(Arrays.asList(0d, 1d, 0d));//6
         RobotAnswers.add(Arrays.asList(1d, 0d, 0d));//7
         neuralNetwork.train(RobotTrainData, RobotAnswers);
-        System.out.println("Trained robot prediction: " + neuralNetwork.predict(0.8, 0.63, 0.21));
+        System.out.println("Trained robot prediction: " + neuralNetwork.predict(0.2, 0.93, 0.21));
 
         VariableNetwork nn = new VariableNetwork(3, 9, 83, 45, input);
         System.out.println(Arrays.toString(nn.Predict()));
