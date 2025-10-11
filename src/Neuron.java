@@ -14,9 +14,11 @@ public class Neuron { //For neurons
     public double getWeight1() {return weight1;}
     public double getWeight2() {return weight2;}
     public double getWeight3() {return weight3;}
+    public double getBias() {return bias;}
     public void setWeight1(double newVal) {weight1 = newVal;}
     public void setWeight2(double newVal) {weight2 = newVal;}
     public void setWeight3(double newVal) {weight3 = newVal;}
+    public void setBias(double newVal) {bias = newVal;}
 
     private double newWeight1 = randomDouble.nextDouble(-1, 1);
     private double newWeight2 = randomDouble.nextDouble(-1, 1);
