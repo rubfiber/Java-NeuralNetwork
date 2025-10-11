@@ -7,7 +7,7 @@ public class VariableNetwork {
     public int hiddenLayersDepth;
     public int inputLayer;
     public int outputLayer;
-    List<VariableNeuron> InputLayerList = new ArrayList<>(); //list for input neurons
+    List<InputVariableNeuron> InputLayerList = new ArrayList<>(); //list for input neurons
     List<VariableNeuron> HiddenLayerList = new ArrayList<>();
     List<VariableNeuron> OutputLayerList = new ArrayList<>();
     List<VariableNeuron> FullNetwork = new ArrayList<>();
@@ -24,7 +24,10 @@ public class VariableNetwork {
      * @param hiddenLayersDepth The depth of the hidden layers
      * @param input The input of the network - must be the same ize as the number of input neurons
      */
-    //TODO: make the input parameter take a list that can have the size of any multiple of the number of input neurons
+    /*TODO:
+       - make the input parameter take a list that can have the size of any multiple of the number of input neurons
+       - convert FullNetwork to List<list<vVariableNeuron>>
+     */
     VariableNetwork(int inputLayer, int outputLayer, int hiddenLayersWidth, int hiddenLayersDepth, Double[] input) {
         this.inputLayer = inputLayer;
         this.outputLayer = outputLayer;
@@ -37,7 +40,7 @@ public class VariableNetwork {
         outputLayerDoubles = new Double[outputLayer];
 
         for (int i = 0; i < inputLayer; i++) {
-            InputLayerList.add(new VariableNeuron());
+            InputLayerList.add(new InputVariableNeuron(input[i]));
         }
         for (int i = 0; i < hiddenLayersDepth * hiddenLayersWidth; i++) { //depth (number of layers) * width (neurons per layer)
             HiddenLayerList.add(new VariableNeuron());
