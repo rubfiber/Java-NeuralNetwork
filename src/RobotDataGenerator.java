@@ -29,9 +29,10 @@ public class RobotDataGenerator {
         }
 
         // Print the generated data
-        //for (int i = 0; i < robotTrainData.size(); i++) {
-       //     System.out.println("Input: " + robotTrainData.get(i) + " -> Output: " + robotAnswers.get(i));
-       // }
+        /*
+        for (int i = 0; i < robotTrainData.size(); i++) {
+           System.out.println("Input: " + robotTrainData.get(i) + " -> Output: " + robotAnswers.get(i));
+         }*/
         TestNetwork neuralNetwork = new TestNetwork();
         neuralNetwork.train(robotTrainData, robotAnswers);
         System.out.println("Trained robot prediction: " + neuralNetwork.predict(0.8, 0.93, 0.21));
