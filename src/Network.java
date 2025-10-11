@@ -1,14 +1,24 @@
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 class Network {
-    List<Neuron> NeuronNetwork = Arrays.asList(
-            new Neuron(), new Neuron(), new Neuron(), //Input Layer
-            new Neuron(), new Neuron(), new Neuron(), //Hidden Layer 1
-            new Neuron(), new Neuron(), new Neuron(), //Hidden Layer 2
-            new Neuron(), new Neuron(), new Neuron(),              //Hidden Layer 3
-            new Neuron(), new Neuron(), new Neuron());                            //Output Layer
+    List<Neuron> inputComputeLayer = Arrays.asList(
+            new Neuron(), new Neuron(), new Neuron()); //input
+    List<Neuron> hiddenLayer = Arrays.asList(
+            new Neuron(), new Neuron(), new Neuron(), //hidden 1
+            new Neuron(), new Neuron(), new Neuron() //hidden 2
+    );
+    List<Neuron> outputLayer = Arrays.asList(
+            new Neuron(), new Neuron(), new Neuron()); //output
+    static List<Neuron> NeuronNetwork = new ArrayList<>();
+    Network() { //add them together
+        NeuronNetwork.addAll(inputComputeLayer);
+        NeuronNetwork.addAll(hiddenLayer);
+        NeuronNetwork.addAll(outputLayer);
+    }
 
     public List<Double> predict(Double inputA, Double inputB, Double inputC) {
 // Layer 1
@@ -35,28 +45,77 @@ class Network {
         return Arrays.asList(NeuronNetwork.get(12).compute(n9, n10, n11), NeuronNetwork.get(13).compute(n9, n10, n11), NeuronNetwork.get(14).compute(n9, n10, n11));
     }
     public void train(List<List<Double>> values, List<List<Double>> answers) {
-        Double bestLossEpoch = null;
+     /*  Double bestLossEpoch = null;
         for (int i = 0; i < 1000; i++) {
-            Neuron epochNeuron = NeuronNetwork.get(i % NeuronNetwork.size());
-            epochNeuron.mutate();
 
             List<List<Double>> predictions = new ArrayList<>();
-            for (List<Double> value : values) {
-                predictions.add(this.predict(
-                        value.get(0),
+            for (List<Double> value : values) { //for each value in values
+                predictions.add(this.predict( //add the prediction from each of the lists in value's smaller lists - this.predict returns a List
+                        value.get(0),         //you're basically adding this neural network's output into a list of predictions iterating through the training data
                         value.get(1),
                         value.get(2)
                 ));
             }
+            //output layer
+            List<List<Double>> outputErrors = new ArrayList<>();
+            for (int j = 0; j < predictions.size(); j++) {
+                List<Double> predicted = predictions.get(j);
+                List<Double> actual = answers.get(j);
 
-            double currentEpochLoss = meanSquareLoss(answers, predictions);
-            if (bestLossEpoch == null || currentEpochLoss < bestLossEpoch) {
-                bestLossEpoch = currentEpochLoss;
-                epochNeuron.Remember();
-            } else {
-                epochNeuron.forget();
+                List<Double> sampleErrors = new ArrayList<>();
+                for (Double aDouble : predicted) {
+                    double error = aDouble - actual.get(j);
+                    sampleErrors.add(error);
+                }
+                outputErrors.add(sampleErrors);
             }
+
+            List<List<Double>> outputDeltas = new ArrayList<>();
+
+            for (int j = 0; j < predictions.size(); j++) {
+                List<Double> sampleDeltas = getDoubles(answers, predictions, j);
+                outputDeltas.add(sampleDeltas);
+            }
+            List<Double> hiddenOutputs = new ArrayList<>();
+            for (int j = 1; j < 3; j++) { //Number of hidden layers
+
+                for (int k = 0; k < 3; k++) { //number of neurons per hidden layer
+                    hiddenOutputs.add(NeuronNetwork.get(3 + j*k).compute(3*j-1, 3*j-2, 3*j-3));
+                }
+
+            }
+
+            double[] hiddenDeltas = new double[6]; //size of input layer
+            for (int h = 0; h <= 2; h++) {
+                double currentHiddenOutput = hiddenOutputs.get(h);
+                double downstreamError = 0.0;
+
+                for (int o = 0; o < outputLayer.size(); o++) {
+                    downstreamError += outputDeltas.get(o) * outputLayer.get(o).weights.get(h); //TODO: make a list for output hidden and input neurons
+                }
+
+                hiddenDeltas[h] = downstreamError * currentHiddenOutput * (1 - currentHiddenOutput);
+            }
+
+
         }
+    }
+    double learningRate = 0.1;
+
+    private static @NotNull List<Double> getDoubles(List<List<Double>> answers, List<List<Double>> predictions, int j) {
+        List<Double> predicted = predictions.get(j);
+        List<Double> actual = answers.get(j);
+
+        List<Double> sampleDeltas = new ArrayList<>();
+        for (int k = 0; k < predicted.size(); k++) {
+            double output = predicted.get(k); // already sigmoid-activated
+            double target = actual.get(k);
+
+            double error = output - target;
+            double delta = error * output * (1 - output); // (error × sigmoid derivative)
+            sampleDeltas.add(delta);
+        }
+        return sampleDeltas;
     }
 
     public static Double meanSquareLoss(List<List<Double>> correctAnswers, List<List<Double>> predictedAnswers) {
@@ -70,6 +129,8 @@ class Network {
             }
         }
         return sumSquare / totalCount;
+
+      */
     }
 
 }
