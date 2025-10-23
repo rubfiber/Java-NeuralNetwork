@@ -45,7 +45,7 @@ public class RobotDataGenerator {
         TestNetwork neuralNetwork = new TestNetwork();
         neuralNetwork.train(listRobotTrainData, listRobotAnswers);
 
-        VariableNetwork variableNetwork = new VariableNetwork(3, 3, 3,3, new Double[]{0.8, 0.3, 0.2});
+        VariableNetwork variableNetwork = new VariableNetwork(3, 3, 6,6, new Double[]{0.8, 0.3, 0.2});
         variableNetwork.train(arrayRobotTrainData, arrayRobotAnswers);
         System.out.println("Trained fixed network robot prediction: " + neuralNetwork.predict(0.8, 0.93, 0.21));
         System.out.println("Trained variable network robot prediction: " + Arrays.toString(variableNetwork.Predict()));
