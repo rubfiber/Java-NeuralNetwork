@@ -1,3 +1,5 @@
+package com.rubfiber.network;
+
 import java.util.*;
 
 public class RobotDataGenerator {

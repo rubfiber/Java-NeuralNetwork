@@ -1,10 +1,10 @@
-import org.jetbrains.annotations.NotNull;
+package com.rubfiber.network;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-class Network {
+public class Network {
     List<Neuron> inputComputeLayer = Arrays.asList(
             new Neuron(), new Neuron(), new Neuron()); //input
     List<Neuron> hiddenLayer = Arrays.asList(

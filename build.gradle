@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'com.example'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Example dependencies
+    implementation 'com.google.code.gson:gson:2.11.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+}
+
+application {
+    // Replace with your main class’s fully-qualified name
+    mainClass = '/'
+}
+
+test {
+    useJUnitPlatform()
+}

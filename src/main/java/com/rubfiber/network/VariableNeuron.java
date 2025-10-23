@@ -1,3 +1,5 @@
+package com.rubfiber.network;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
