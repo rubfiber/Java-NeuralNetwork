@@ -1,29 +1,39 @@
-### IntelliJ IDEA ###
+# =========================
+# Gradle
+# =========================
+.gradle/
+build/
 out/
-!**/src/main/**/out/
-!**/src/test/**/out/
 
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+# Local Gradle wrapper logs
+gradle-app.setting
+!gradlew
+!gradlew.bat
+!gradle-wrapper.jar
+!gradle-wrapper.properties
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+# =========================
+# IntelliJ IDEA
+# =========================
+.idea/
+*.iml
+*.iws
+*.ipr
 
-### VS Code ###
-.vscode/
-
-### Mac OS ###
+# =========================
+# OS-specific junk
+# =========================
 .DS_Store
+Thumbs.db
+
+# =========================
+# Logs & temporary files
+# =========================
+*.log
+*.tmp
+
+# =========================
+# Dependency caches
+# =========================
+# Uncomment if you don't want to commit downloaded dependencies
+.m2/
