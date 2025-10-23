@@ -214,7 +214,6 @@ public class VariableNetwork {
         double layerSum = 0.0;
         for (int nextLayerNeuron = 0; nextLayerNeuron < hiddenLayersWidth; nextLayerNeuron++) {
             int nextLayerStart = (layer + 1) * hiddenLayersWidth;
-            VariableNeuron nextNeuron = HiddenLayerList.get(nextLayerStart + nextLayerNeuron);
             double weight = HiddenLayerList
                     .get(nextLayerStart + nextLayerNeuron)
                     .getWeights()
