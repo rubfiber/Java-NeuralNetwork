@@ -213,8 +213,12 @@ public class VariableNetwork {
     private double getDelta(int layer, int neuron, List<List<Double>> hiddenDeltas) {
         double layerSum = 0.0;
         for (int nextLayerNeuron = 0; nextLayerNeuron < hiddenLayersWidth; nextLayerNeuron++) {
-            double weight = HiddenLayerList.get(layer + 1).getWeights().get(neuron); //get the neuron-th value in the next list in hiddenOutput
-            layerSum += hiddenDeltas.get(layer + 1).get(nextLayerNeuron) * weight;
+            int nextLayerStart = (layer + 1) * hiddenLayersWidth;
+            VariableNeuron nextNeuron = HiddenLayerList.get(nextLayerStart + nextLayerNeuron);
+            double weight = HiddenLayerList
+                    .get(nextLayerStart + nextLayerNeuron)
+                    .getWeights()
+                    .get(neuron);            layerSum += hiddenDeltas.get(layer + 1).get(nextLayerNeuron) * weight;
         }
         return layerSum * hiddenOutput.get(layer).get(neuron) * (1 - hiddenOutput.get(layer).get(neuron));
     }
