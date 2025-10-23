@@ -183,7 +183,6 @@ public class VariableNetwork {
                             double delta = learningRate * hiddenDeltas.get(layer).get(neuronIndex)
                                     * hiddenOutput.get(layer - 1).get(prevIndex);
                             newWeights.add(oldWeight - delta);
-                            System.out.println("newWeights size: " + newWeights.size());
                         }
 
                         neuron.setWeights(newWeights);
@@ -221,7 +220,7 @@ public class VariableNetwork {
     }
 
     public List<Double> forwardPass() {
-        List<Double> forwardPassOutput = new ArrayList<>();
+        List<Double> forwardPassOutput;
         for (int i = 0; i < inputLayer; i++) {
             InputLayerList.get(i).input.clear();
             InputLayerList.get(i).input.add(values.get(randomAnswer)[i]);

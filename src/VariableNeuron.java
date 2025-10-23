@@ -25,10 +25,6 @@ public class VariableNeuron { //For neurons
     void clearInput() {
         input.clear();
     }
-    void clearWeights() {
-        weights.clear();
-    }
-
     List<Double> input = new ArrayList<>(); //input as list
     List<Double> weights = new ArrayList<>();
     List<Double> newWeights = new ArrayList<>(); //new weights for forget, mutate and remember
