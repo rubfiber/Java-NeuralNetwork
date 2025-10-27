@@ -2,7 +2,7 @@ package com.rubfiber.network;
 
 import java.util.*;
 
-public class VariableNetwork {
+public class TestVariableNetwork{
     public int hiddenLayersWidth;
     public int hiddenLayersDepth;
     public int inputLayer;
@@ -10,7 +10,12 @@ public class VariableNetwork {
     List<InputVariableNeuron> InputLayerList = new ArrayList<>(); //list for input neurons
     List<VariableNeuron> HiddenLayerList = new ArrayList<>();
     List<VariableNeuron> OutputLayerList = new ArrayList<>();
+    List<VariableNeuron> FullNetwork = new ArrayList<>();
     public List<Double> input;
+    Double[] inputLayerOutput;
+    Double[] outputLayerOutput;
+
+    List<List<Double>> hiddenOutput = new ArrayList<>();
 
     /**
      *
@@ -18,91 +23,64 @@ public class VariableNetwork {
      * @param outputLayer The output layer size
      * @param hiddenLayersWidth The width of the hidden layers
      * @param hiddenLayersDepth The depth of the hidden layers
-     * @param input The input of the network - must be the same ize as the number of input neurons
+     * @param input The input of the network - must be the same size as the number of input neurons
      */
-
-
-    VariableNetwork(int inputLayer, int outputLayer, int hiddenLayersWidth, int hiddenLayersDepth, Double[] input) {
+    TestVariableNetwork(int inputLayer, int outputLayer, int hiddenLayersWidth, int hiddenLayersDepth, Double[] input) {
         this.inputLayer = inputLayer;
         this.outputLayer = outputLayer;
         this.hiddenLayersWidth = hiddenLayersWidth;
         this.hiddenLayersDepth = hiddenLayersDepth;
-        this.input = Arrays.asList(input);
 
-        //init input layer
-        for (int neuron = 0; neuron < inputLayer; neuron++) {
-            InputLayerList.add(new InputVariableNeuron(input[neuron]));
-            InputLayerList.get(neuron).safeInitializeWeights(input.length);
-            //InputLayerList.get(neuron).Initialize();
-        }
-        //init first hidden layer
-        for (int neuron = 0; neuron < hiddenLayersWidth; neuron++) {
-            HiddenLayerList.add(new VariableNeuron());
-            HiddenLayerList.get(neuron).setInput(new ArrayList<>(Collections.nCopies(inputLayer, 0.0))); //fills with 0 just for initialization
-           // HiddenLayerList.get(neuron).safeInitializeWeights(HiddenLayerList.get(neuron).getInput().size());
-            HiddenLayerList.get(neuron).Initialize();
-            HiddenLayerList.get(neuron).clearInput(); //initialize then clear
-        }
-        //init rest of hidden layers
-        for (int neuron = hiddenLayersWidth; neuron < hiddenLayersWidth * hiddenLayersDepth; neuron++) {
-            HiddenLayerList.add(new VariableNeuron());
-            HiddenLayerList.get(neuron).setInput(new ArrayList<>(Collections.nCopies(hiddenLayersWidth, 0.0)));
-            HiddenLayerList.get(neuron).Initialize();
-            //HiddenLayerList.get(neuron).safeInitializeWeights(hiddenLayersWidth);
-            HiddenLayerList.get(neuron).clearInput();
-        }
-        //init for output layer
-        for (int neuron = 0; neuron < outputLayer; neuron++) {
-            OutputLayerList.add(new VariableNeuron());
-            OutputLayerList.get(neuron).setInput(new ArrayList<>(Collections.nCopies(hiddenLayersWidth, 0.0)));
-            OutputLayerList.get(neuron).Initialize();
-            OutputLayerList.get(neuron).clearInput();
+        this.input = List.of(input);
+        inputLayerOutput = new Double[inputLayer];
+        outputLayerOutput = new Double[outputLayer];
 
-        }
-    }
-    public List<Double> getInput() {
-        List<Double> networkInput = new ArrayList<>();
+        // Input layer
         for (int i = 0; i < inputLayer; i++) {
-            networkInput.add(InputLayerList.get(i).getInput().getFirst());
+            InputVariableNeuron ivn = new InputVariableNeuron(input[i]);
+            ivn.setInput(new ArrayList<>(Collections.singletonList(input[i])));
+            ivn.Initialize();
+            InputLayerList.add(ivn);
         }
-        return networkInput;
-    }
-    public List<List<List<Double>>> getWeights() {
-        List<List<List<Double>>> weights = new ArrayList<>();
-        for (int i = 0; i < hiddenLayersDepth; i++) {
-            List<List<Double>> currentHiddenLayerWeights = new ArrayList<>();
-            for (int j = 0; j < hiddenLayersWidth; j++) {
-                currentHiddenLayerWeights.add(HiddenLayerList.get((i * hiddenLayersWidth) + j).getWeights());
+
+        // First hidden layer
+        for (int neuron = 0; neuron < hiddenLayersWidth; neuron++) {
+            VariableNeuron vn = new VariableNeuron();
+            vn.setInput(new ArrayList<>(Collections.nCopies(inputLayer, 0.0)));
+            vn.Initialize();
+            HiddenLayerList.add(vn);
+        }
+
+        // Remaining hidden layers
+        for (int layer = 1; layer < hiddenLayersDepth; layer++) {
+            for (int neuron = 0; neuron < hiddenLayersWidth; neuron++) {
+                VariableNeuron vn = new VariableNeuron();
+                vn.setInput(new ArrayList<>(Collections.nCopies(hiddenLayersWidth, 0.0)));
+                vn.Initialize();
+                HiddenLayerList.add(vn);
             }
-            weights.add(currentHiddenLayerWeights);
         }
-        List<List<Double>> outputWeightList = new ArrayList<>();
-        for (int i = 0; i < outputLayer; i++) {
-            outputWeightList.add(OutputLayerList.get(i).getWeights());
-        }
-        weights.add(outputWeightList);
-        return weights;
 
+        // Output layer
+        for (int neuron = 0; neuron < outputLayer; neuron++) {
+            VariableNeuron vn = new VariableNeuron();
+            vn.setInput(new ArrayList<>(Collections.nCopies(hiddenLayersWidth, 0.0)));
+            vn.Initialize();
+            OutputLayerList.add(vn);
+        }
+
+        FullNetwork.addAll(InputLayerList);
+        FullNetwork.addAll(HiddenLayerList);
+        FullNetwork.addAll(OutputLayerList);
     }
-    Double[] inputLayerOutput;
-
-    Double[] outputLayerOutput;
-    List<List<Double>> hiddenOutput = new ArrayList<>();
-    List<List<Double>> hiddenInput = new ArrayList<>();
-    
 
     public Double[] Predict(Double[] input) {
         // clear previous hidden outputs
         hiddenOutput.clear();
-        hiddenInput.clear();
-        for (InputVariableNeuron n : InputLayerList) {n.clearInput();}
-        for (VariableNeuron n: HiddenLayerList) {n.clearInput();}
-        for (VariableNeuron n : OutputLayerList) {n.clearInput();}
-        inputLayerOutput = new Double[inputLayer];
-        outputLayerOutput = new Double[outputLayer];
 
         // --- Input Layer ---
         for (int i = 0; i < inputLayer; i++) {
+            // always use fresh list for input
             InputLayerList.get(i).setInput(new ArrayList<>(Collections.singletonList(input[i])));
             inputLayerOutput[i] = InputLayerList.get(i).compute();
         }
@@ -115,13 +93,10 @@ public class VariableNetwork {
         // --- First hidden layer ---
         List<Double> firstLayerOutput = new ArrayList<>();
         for (int neuron = 0; neuron < hiddenLayersWidth; neuron++) {
-            List<Double> freshInput = new ArrayList<>(Arrays.asList(inputLayerOutput));
-            HiddenLayerList.get(neuron).setInput(freshInput);
+            HiddenLayerList.get(neuron).setInput(new ArrayList<>(Arrays.asList(inputLayerOutput)));
             firstLayerOutput.add(HiddenLayerList.get(neuron).compute(false));
-
         }
         hiddenOutput.add(firstLayerOutput);
-        hiddenInput.add(Arrays.asList(inputLayerOutput));
 
         // --- Remaining hidden layers ---
         for (int layer = 1; layer < hiddenLayersDepth; layer++) {
@@ -130,22 +105,26 @@ public class VariableNetwork {
                 int neuronID = layer * hiddenLayersWidth + neuron;
                 VariableNeuron currentNeuron = HiddenLayerList.get(neuronID);
 
-                // feed input from previous layer (do NOT re-initialize weights here)
+                // feed input from previous layer
                 currentNeuron.setInput(new ArrayList<>(hiddenOutput.get(layer - 1)));
+                currentNeuron.Initialize();
                 currentLayerOutput.add(currentNeuron.compute(false));
             }
-            hiddenInput.add(new ArrayList<>(hiddenOutput.get(layer - 1)));
             hiddenOutput.add(currentLayerOutput);
         }
 
         // --- Output Layer ---
-            List<Double> lastHidden = hiddenOutput.getLast();
-            for (int neuron = 0; neuron < outputLayer; neuron++) {
-                OutputLayerList.get(neuron).setInput(new ArrayList<>(lastHidden));
-                outputLayerOutput[neuron] = OutputLayerList.get(neuron).compute(true);
-            }
-            return outputLayerOutput;
+        for (int neuron = 0; neuron < outputLayer; neuron++) {
+            OutputLayerList.get(neuron).setInput(new ArrayList<>(hiddenOutput.getLast()));
+            OutputLayerList.get(neuron).Initialize();
+            outputLayerOutput[neuron] = OutputLayerList.get(neuron).compute(true);
+        }
+        Double[] trueOutput = new Double[outputLayer];
+
+        return outputLayerOutput;
     }
+
+
 
     Random random = new Random();
     int randomAnswer;
@@ -158,11 +137,11 @@ public class VariableNetwork {
         for (int epoch = 0; epoch < 1000; epoch++) {
             System.out.println("epoch: " + epoch);
             for (int sample = 0; sample < values.size(); sample++) {
-              //  System.out.println("sample: " + sample);
+                System.out.println("sample: " + sample);
                 randomAnswer = random.nextInt(values.size());
 
                 //forward pass
-                List<Double> networkOutput = this.forwardPass(values.get(sample));
+                List<Double> networkOutput = this.forwardPass();
                 //output layer
                 List<Double> outputDelta = new ArrayList<>();
                 for (int i = 0; i < networkOutput.size(); i++) {
@@ -226,7 +205,6 @@ public class VariableNetwork {
                         List<Double> newWeights = new ArrayList<>();
                         if (neuron.getWeights().isEmpty() || neuron.getWeights().size() != expectedInputSize) {
                             neuron.setInput(new ArrayList<>(hiddenOutput.get(layer - 1)));
-                            System.out.println("neuron weights empty");
                             neuron.Initialize();
                         }
                         for (int prevIndex = 0; prevIndex < expectedInputSize; prevIndex++) { //neuron before
@@ -235,7 +213,6 @@ public class VariableNetwork {
                                     * hiddenOutput.get(layer - 1).get(prevIndex);
                             newWeights.add(oldWeight - delta);
                         }
-
                         neuron.setWeights(newWeights);
                     }
                 }
@@ -273,9 +250,13 @@ public class VariableNetwork {
         return layerSum * hiddenOutput.get(layer).get(neuron) * (1 - hiddenOutput.get(layer).get(neuron));
     }
 
-    public List<Double> forwardPass(Double[] inputArray) {
-        Double[] outputs = this.Predict(inputArray);
-        return Arrays.asList(outputs);
+    public List<Double> forwardPass() {
+        List<Double> forwardPassOutput;
+        for (int i = 0; i < inputLayer; i++) {
+            InputLayerList.get(i).input.clear();
+            InputLayerList.get(i).input.add(values.get(randomAnswer)[i]);
+        }
+        forwardPassOutput = Arrays.asList(this.Predict(values.get(randomAnswer)));
+        return forwardPassOutput;
     }
-
 }

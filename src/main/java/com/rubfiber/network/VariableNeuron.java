@@ -33,44 +33,63 @@ public class VariableNeuron { //For neurons
 
     public void Initialize() {
         if (input == null || input.isEmpty()) {
-            System.out.println("bad input");
             throw new IllegalStateException("Neuron inputs not set before initialization");
         }
         if (weights.isEmpty()) {
+            System.out.println("weights empty");
             for (Double ignored : input) {
-                weights.add((Math.random() * 2 - 1)); // Between -1 and 1
+                weights.add(random.nextGaussian() * Math.sqrt(2.0 / input.size())); // He init
+                System.out.println(weights);
             }
         }
-
+        bias = 0.01; // small positive bias
     }
+    public void safeInitializeWeights(int size) {
+        if (size <= 0) throw new IllegalArgumentException("size must be > 0");
+        if (weights != null && weights.size() == size) return; // already ok
+
+        List<Double> newW = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            // He init (good for ReLU) or small Gaussian for sigmoid; adjust accordingly
+            newW.add(random.nextGaussian() * Math.sqrt(2.0 / size));
+        }
+        this.weights = newW;
+        if (Double.isNaN(bias) || Double.isInfinite(bias)) bias = 0.01;
+    }
+
+
 
     void setBias(double newVal) {
         bias = newVal;
     }
-    Double compute() {
-        if (input == null || weights == null) {
+    Double compute(boolean isOutputLayer) {
+        if (input == null || weights == null)
             throw new IllegalStateException("Inputs or weights not set before compute()");
-        }
-        if (input.size() != weights.size()) {
-            throw new IllegalStateException("Input and weight size mismatch: " + input.size() + " vs " + weights.size());
-        }
+        if (input.size() != weights.size())
+            throw new IllegalStateException("Input and weight size mismatch");
 
         double sum = 0.0;
         for (int i = 0; i < input.size(); i++) {
+            if (input.get(i) == null || weights.get(i) == null)
+                throw new IllegalStateException("Null input or weight detected");
             sum += input.get(i) * weights.get(i);
         }
-        sum += bias; // Add bias
+        sum += bias;
 
-        // Apply sigmoid activation
-        double activated = sigmoid(sum);
-
-        // Sanity check
-        if (Double.isNaN(activated) || Double.isInfinite(activated)) {
-            throw new IllegalStateException("NaN or Infinity detected in compute(). Sum=" + sum);
+        double activated;
+        if (isOutputLayer) {
+            activated = sigmoid(sum);
+        } else {
+            activated = relu(sum); // nonlinearity that keeps variance alive
         }
 
-        return activated;
+        if (Double.isNaN(activated) || Double.isInfinite(activated))
+            throw new IllegalStateException("NaN or Infinity in compute(). Sum=" + sum);
+
+        return sigmoid(sum);
     }
+
+    private double relu(double x) { return Math.max(0, x); }
 
     private double sigmoid(double x) {
         // Numerically stable sigmoid to avoid overflow/underflow

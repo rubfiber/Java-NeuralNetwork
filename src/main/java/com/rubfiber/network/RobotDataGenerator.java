@@ -47,9 +47,33 @@ public class RobotDataGenerator {
         TestNetwork neuralNetwork = new TestNetwork();
         neuralNetwork.train(listRobotTrainData, listRobotAnswers);
 
-        VariableNetwork variableNetwork = new VariableNetwork(3, 3, 6,6, new Double[]{0.8, 0.3, 0.2});
+        VariableNetwork variableNetwork = new VariableNetwork(3, 3, 6,6, new Double[]{0.0, 0.0, 0.0});
         variableNetwork.train(arrayRobotTrainData, arrayRobotAnswers);
-        System.out.println("Trained fixed network robot prediction: " + neuralNetwork.predict(0.8, 0.93, 0.21));
-        System.out.println("Trained variable network robot prediction: " + Arrays.toString(variableNetwork.Predict()));
+        System.out.println("Trained fixed network robot prediction: " + neuralNetwork.predict(0.8, 0.93, 0.21) + "\n");
+
+        Double[] input = new Double[]{0.99, 0.1, 0.0};
+
+        System.out.println("INPUT for trained network 1: " + Arrays.toString(input));
+        System.out.println("Trained variable network robot prediction: " + Arrays.toString(variableNetwork.Predict(input)));
+        System.out.println("1st prediction outputs per layer: \n input layer: " + Arrays.toString(variableNetwork.inputLayerOutput) +" \n hidden layer: " + variableNetwork.hiddenOutput + "\n output layer: " + Arrays.toString(variableNetwork.outputLayerOutput) + "\n\n");
+        System.out.println("1st prediction inputs per layer: \n input layer: " + variableNetwork.getInput() + " \n hidden layers: " + variableNetwork.hiddenInput +  " \n output layer: " + variableNetwork.hiddenOutput.getLast() + "\n");
+
+        System.out.println("last layer of prediction 1 inputs: " + variableNetwork.hiddenOutput.getLast() + "\n\n\n\n");
+        System.out.println("1st prediction weights (output layer is the last list): " + variableNetwork.getWeights() + "\n\n");
+
+        input = new Double[]{0.0, 0.99, 0.0};
+
+        System.out.println("INPUT for trained network 2: " + Arrays.toString(input));
+        System.out.println("Other Trained variable network prediction: " + Arrays.toString(variableNetwork.Predict(input)) + "\n");
+        System.out.println("2nd prediction outputs per layer: \n input layer: " + Arrays.toString(variableNetwork.inputLayerOutput) +" \n hidden layers: " + variableNetwork.hiddenOutput + "\n output layer: " + Arrays.toString(variableNetwork.outputLayerOutput) + "\n");
+        System.out.println("2nd prediction inputs per layer: \n input layer: " + variableNetwork.getInput() + " \n hidden layers: " + variableNetwork.hiddenInput +  " \n output layer: " + variableNetwork.hiddenOutput.getLast() + "\n");
+        System.out.println("last layer of prediction 2 inputs: " + variableNetwork.hiddenOutput.getLast() + "\n\n\n");
+        System.out.println("2nd prediction weights (output layer is the last list): " + variableNetwork.getWeights() + "\n\n");
+
+        System.out.println("Other Trained variable network prediction: " + Arrays.toString(variableNetwork.Predict(input)) + "\n");
+
+        System.out.println("Other Trained variable network prediction: " + Arrays.toString(variableNetwork.Predict(input)) + "\n");
+
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     }
 }
