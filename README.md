@@ -1,7 +1,7 @@
 # A simple Neural Network
 ## Written in Java
 
-This is an incredibly simple neural network. More coming soon, maybe.
+This is an pretty simple neural network. More coming soon, maybe.
 
 # Installation
 
