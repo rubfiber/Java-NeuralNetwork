@@ -10,7 +10,6 @@ public class VariableNetwork {
     List<InputVariableNeuron> InputLayerList = new ArrayList<>(); //list for input neurons
     List<VariableNeuron> HiddenLayerList = new ArrayList<>();
     List<VariableNeuron> OutputLayerList = new ArrayList<>();
-    public List<Double> input;
 
     /**
      *
@@ -101,10 +100,9 @@ public class VariableNetwork {
         inputLayerOutput = new Double[inputLayer];
         outputLayerOutput = new Double[outputLayer];
 
-        List<Double> inputNormalized = normalize(Arrays.asList(input));
         // --- Input Layer ---
         for (int i = 0; i < inputLayer; i++) {
-            InputLayerList.get(i).setInput(new ArrayList<>(Collections.singletonList(inputNormalized.get(i))));
+            InputLayerList.get(i).setInput(new ArrayList<>(Collections.singletonList(input[(i)])));
             inputLayerOutput[i] = InputLayerList.get(i).compute();
         }
 
@@ -170,7 +168,7 @@ public class VariableNetwork {
     public void train(List<Double[]> values, List<Double[]> answers) {
         this.values = values;
         this.answers = answers;
-        double learningRate = 1.0;
+        double learningRate = 0.01;
         for (int epoch = 0; epoch < 1000; epoch++) {
             System.out.println("epoch: " + epoch);
             for (int sample = 0; sample < values.size(); sample++) {
