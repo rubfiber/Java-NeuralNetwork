@@ -27,7 +27,6 @@ public class VariableNetwork {
         this.outputLayer = outputLayer;
         this.hiddenLayersWidth = hiddenLayersWidth;
         this.hiddenLayersDepth = hiddenLayersDepth;
-        this.input = Arrays.asList(input);
 
         //init input layer
         for (int neuron = 0; neuron < inputLayer; neuron++) {

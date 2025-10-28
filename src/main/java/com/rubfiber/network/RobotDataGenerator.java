@@ -43,7 +43,7 @@ public class RobotDataGenerator {
 
         VariableNetwork variableNetwork = new VariableNetwork(3, 3, 6,6, new Double[]{0.0, 0.0, 0.0});
         variableNetwork.train(arrayRobotTrainData, arrayRobotAnswers);
-        System.out.println("Trained fixed network robot prediction: " + neuralNetwork.predict(0.8, 0.93, 0.21) + "\n");
+        System.out.println("Trained fixed network robot prediction: " + neuralNetwork.predict(0.12, 0.007656, 0.99) + "\n");
 
         Double[] input = new Double[]{0.99, 0.1, 0.0};
 

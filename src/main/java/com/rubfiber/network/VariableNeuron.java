@@ -90,7 +90,7 @@ public class VariableNeuron { //For neurons
     }
 
     private double relu(double x) {
-        return (x >= 0) ? 0.01 * x : 0;
+        return (x > 0) ? x : 0.01 * x;
     }
 
     private double sigmoid(double x) {
