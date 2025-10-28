@@ -92,6 +92,7 @@ public class VariableNetwork {
     
 
     public Double[] Predict(Double[] input) {
+
         // clear previous hidden outputs
         hiddenOutput.clear();
         hiddenInput.clear();
@@ -101,9 +102,10 @@ public class VariableNetwork {
         inputLayerOutput = new Double[inputLayer];
         outputLayerOutput = new Double[outputLayer];
 
+        List<Double> inputNormalized = normalize(Arrays.asList(input));
         // --- Input Layer ---
         for (int i = 0; i < inputLayer; i++) {
-            InputLayerList.get(i).setInput(new ArrayList<>(Collections.singletonList(input[i])));
+            InputLayerList.get(i).setInput(new ArrayList<>(Collections.singletonList(inputNormalized.get(i))));
             inputLayerOutput[i] = InputLayerList.get(i).compute();
         }
 
@@ -120,9 +122,8 @@ public class VariableNetwork {
             firstLayerOutput.add(HiddenLayerList.get(neuron).compute(false));
 
         }
-        hiddenOutput.add(firstLayerOutput);
-        hiddenInput.add(Arrays.asList(inputLayerOutput));
-
+        hiddenOutput.add(new ArrayList<>(firstLayerOutput));
+        hiddenInput.add(new ArrayList<>(Arrays.asList(inputLayerOutput)));
         // --- Remaining hidden layers ---
         for (int layer = 1; layer < hiddenLayersDepth; layer++) {
             List<Double> currentLayerOutput = new ArrayList<>();
@@ -139,12 +140,28 @@ public class VariableNetwork {
         }
 
         // --- Output Layer ---
+        outputLayerOutput = new Double[outputLayer];
             List<Double> lastHidden = hiddenOutput.getLast();
             for (int neuron = 0; neuron < outputLayer; neuron++) {
                 OutputLayerList.get(neuron).setInput(new ArrayList<>(lastHidden));
                 outputLayerOutput[neuron] = OutputLayerList.get(neuron).compute(true);
             }
             return outputLayerOutput;
+    }
+    public static List<Double> normalize(List<Double> values) {
+        double mean = values.stream().mapToDouble(v -> v).average().orElse(0.0);
+        double variance = values.stream().mapToDouble(v -> Math.pow(v - mean, 2)).average().orElse(0.0);
+        double std = Math.sqrt(variance + 1e-8);
+
+        List<Double> normalized = new ArrayList<>();
+        for (double v : values) {
+            double z = (v - mean) / std;
+            // Optional clamp
+            if (z > 10.0) z = 10.0;
+            if (z < -10.0) z = -10.0;
+            normalized.add(z);
+        }
+        return normalized;
     }
 
     Random random = new Random();

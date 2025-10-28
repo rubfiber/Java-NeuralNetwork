@@ -25,7 +25,7 @@ public class VariableNeuron { //For neurons
         return bias;
     }
     void clearInput() {
-        input.clear();
+        input = new ArrayList<>();
     }
     List<Double> input = new ArrayList<>(); //input as list
     List<Double> weights = new ArrayList<>();
@@ -86,10 +86,12 @@ public class VariableNeuron { //For neurons
         if (Double.isNaN(activated) || Double.isInfinite(activated))
             throw new IllegalStateException("NaN or Infinity in compute(). Sum=" + sum);
 
-        return sigmoid(sum);
+        return activated;
     }
 
-    private double relu(double x) { return Math.max(0, x); }
+    private double relu(double x) {
+        return (x >= 0) ? 0.01 * x : 0;
+    }
 
     private double sigmoid(double x) {
         // Numerically stable sigmoid to avoid overflow/underflow

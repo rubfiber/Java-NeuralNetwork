@@ -38,12 +38,6 @@ public class RobotDataGenerator {
             listRobotAnswers.add(listOutput);
             arrayRobotAnswers.add(arrayOutput);
         }
-
-        // Print the generated data
-        /*
-        for (int i = 0; i < listRobotTrainData.size(); i++) {
-           System.out.println("Input: " + listRobotTrainData.get(i) + " -> Output: " + robotAnswers.get(i));
-         }*/
         TestNetwork neuralNetwork = new TestNetwork();
         neuralNetwork.train(listRobotTrainData, listRobotAnswers);
 
