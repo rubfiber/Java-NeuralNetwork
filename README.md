@@ -20,5 +20,6 @@ There are also two neural network classes: Network and VariableNetwork. Network 
 
 # Known bugs and issues
 
-There is currently an issue with bias updating when training that makes the network give an incorrect output. Giving the saem network different input data also results in a prediction extremely similar to the first. 
-This is likely an error in updating deltas, but I'm not sure.
+- There is currently an issue with bias updating when training that makes the network give an incorrect output. Giving the saem network different input data also results in a prediction extremely similar to the first. This is likely an error in updating deltas, but I'm not sure.
+- Pretty inefficient
+
