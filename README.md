@@ -18,3 +18,7 @@ There are two neuron classes: Neuron and VariableNeuron. Neuron has 3 inputs and
 ### Networks
 There are also two neural network classes: Network and VariableNetwork. Network is not as customizable as VariableNetwork, but more efficient. VariableNetwork allows you to customize the input layer, width and depth of the hidden layers, and output layer.
 
+# Known issues
+
+There is currently an issue with bias updating when training that makes the network give an incorrect output. Giving the saem network different input data also results in a prediction extremely similar to the first. 
+This is likely an error in updating deltas, but I'm not sure.
