@@ -253,8 +253,8 @@ public class TestVariableNetwork{
     public List<Double> forwardPass() {
         List<Double> forwardPassOutput;
         for (int i = 0; i < inputLayer; i++) {
-            InputLayerList.get(i).input.clear();
-            InputLayerList.get(i).input.add(values.get(randomAnswer)[i]);
+            InputLayerList.get(i).getInput().clear();
+            InputLayerList.get(i).getInput().add(values.get(randomAnswer)[i]);
         }
         forwardPassOutput = Arrays.asList(this.Predict(values.get(randomAnswer)));
         return forwardPassOutput;

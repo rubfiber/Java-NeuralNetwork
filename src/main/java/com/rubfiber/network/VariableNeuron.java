@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public class VariableNeuron { //For neurons
-    Random random = new Random(); //for doubles
+    private final Random random = new Random(); //for doubles
     double bias = random.nextDouble(-1, 1); //Bias
 
 
@@ -13,36 +13,36 @@ public class VariableNeuron { //For neurons
         return weights;
     }
     void setWeights(List<Double> newWeights) {
+        weights.clear();
         weights = newWeights;
     }
     List<Double> getInput() {
         return input;
     }
     void setInput(List<Double> newInput) {
-        input = newInput;
+        input.clear();
+        input = new ArrayList<>(newInput);
     }
     double getBias() {
         return bias;
     }
-    void clearInput() {
+    public void clearInput() {
+        input.clear();
         input = new ArrayList<>();
     }
     List<Double> input = new ArrayList<>(); //input as list
     List<Double> weights = new ArrayList<>();
-    List<Double> newWeights = new ArrayList<>(); //new weights for forget, mutate and remember
 
     public void Initialize() {
+        bias = 0.0;
+        weights.clear();
+
         if (input == null || input.isEmpty()) {
             throw new IllegalStateException("Neuron inputs not set before initialization");
         }
-        if (weights.isEmpty()) {
-            System.out.println("weights empty");
-            for (Double ignored : input) {
+            for (int i = 0; i < input.size(); i++) {
                 weights.add(random.nextGaussian() * Math.sqrt(2.0 / input.size())); // He init
-                System.out.println(weights);
-            }
         }
-        bias = 0.01; // small positive bias
     }
     public void safeInitializeWeights(int size) {
         if (size <= 0) throw new IllegalArgumentException("size must be > 0");
@@ -50,7 +50,7 @@ public class VariableNeuron { //For neurons
 
         List<Double> newW = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            // He init (good for ReLU) or small Gaussian for sigmoid; adjust accordingly
+            // He init
             newW.add(random.nextGaussian() * Math.sqrt(2.0 / size));
         }
         this.weights = newW;
@@ -80,7 +80,7 @@ public class VariableNeuron { //For neurons
         if (isOutputLayer) {
             activated = sigmoid(sum);
         } else {
-            activated = relu(sum); // nonlinearity that keeps variance alive
+            activated = Math.tanh(sum); // nonlinearity that keeps variance alive
         }
 
         if (Double.isNaN(activated) || Double.isInfinite(activated))
@@ -89,8 +89,7 @@ public class VariableNeuron { //For neurons
         return activated;
     }
 
-    private double relu(double x) {
-        return (x > 0) ? x : 0.01 * x;
+    private double relu(double x) {return (x > 0) ? x : 0.01 * x;
     }
 
     private double sigmoid(double x) {
@@ -102,39 +101,5 @@ public class VariableNeuron { //For neurons
             double z = Math.exp(x);
             return z / (1 + z);
         }
-    }
-
-    double newBias;
-    @Deprecated
-    void mutate() {
-        newBias = random.nextDouble(-1, 1);
-        double factorOfChange = random.nextDouble(-1, 1);
-        newWeights.clear();
-        for (int j = 0; j < weights.size(); j++) {
-            double newVal = random.nextDouble(-1, 1);
-            newWeights.add(newVal);
-        }
-
-
-        boolean biasOrNot = random.nextBoolean(); //chooses to change bias or weights. sorry for the variable names, I couldn't think of anything better.
-        if (biasOrNot) {
-            newBias += factorOfChange;
-        } else {
-            int Index = random.nextInt(newWeights.size());
-            Double weightToChange = newWeights.get(Index); //chooses a random weight to change
-            newWeights.set(Index, weightToChange + factorOfChange); //increases (or decreases) that weight by the double factorOfChange
-
-        }
-
-    }
-    @Deprecated
-    void forget() { //if the new value was worse than the old, restore the old value
-        newBias = bias;
-        newWeights = weights;
-    }
-    @Deprecated
-    void remember() { //if the new value is better than the old, keep it
-        bias = newBias;
-        weights = newWeights;
     }
 }
