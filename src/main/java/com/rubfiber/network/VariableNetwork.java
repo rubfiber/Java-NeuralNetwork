@@ -199,7 +199,7 @@ public class VariableNetwork {
     public void train(List<Double[]> values, List<Double[]> answers) {
         this.values = values;
         this.answers = answers;
-        double learningRate = 0.00005;
+        double learningRate = 0.0001;
         for (int epoch = 0; epoch < 1000; epoch++) {
             for (int sample = 0; sample < values.size(); sample++) {
                 //  System.out.println("sample: " + sample);
