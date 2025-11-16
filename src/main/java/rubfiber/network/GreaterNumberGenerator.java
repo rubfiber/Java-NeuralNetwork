@@ -73,13 +73,11 @@ public class GreaterNumberGenerator {
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
         VariableNetwork newNetwork = new VariableNetwork(3, 3, 6, 6, new Double[]{0.0, 0.0, 0.0});
-        newNetwork.setWeights(variableNetwork.getWeights());
-       newNetwork.setBias(variableNetwork.getBias());
+        newNetwork.loadNetworkState("src/main/resources/networkState.json");
+
         input = new Double[]{rand.nextDouble(), rand.nextDouble(), rand.nextDouble()};
         input = new Double[]{0.01, 0.99, 0.5};
         System.out.println(Arrays.toString(newNetwork.Predict(input)) + " input: " + Arrays.toString(input));
 
-        newNetwork.saveNetworkState("src/main/resources/networkState.json");
-        newNetwork.loadNetworkState("src/main/resources/networkState.json");
     }
 }
