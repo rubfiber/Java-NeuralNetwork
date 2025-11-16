@@ -30,30 +30,30 @@ public class VariableNetwork {
         //init input layer
         for (int neuron = 0; neuron < inputLayer; neuron++) {
             InputLayerList.add(new InputVariableNeuron(input[neuron]));
-            InputLayerList.get(neuron).safeInitializeWeights(input.length);
-            //InputLayerList.get(neuron).Initialize();
+            InputLayerList.get(neuron).Initialize(inputLayer, outputLayer);
+            //InputLayerList.get(neuron).Initialize(inpuLayer, outputLayer);
         }
         //init first hidden layer
         for (int neuron = 0; neuron < hiddenLayersWidth; neuron++) {
             HiddenLayerList.add(new VariableNeuron());
             HiddenLayerList.get(neuron).setInput(new ArrayList<>(Collections.nCopies(inputLayer, 0.0))); //fills with 0 just for initialization
-            // HiddenLayerList.get(neuron).safeInitializeWeights(HiddenLayerList.get(neuron).getInput().size());
-            HiddenLayerList.get(neuron).Initialize();
+            // HiddenLayerList.get(neuron).Initialize(inputLayer, outputLayer);
+            HiddenLayerList.get(neuron).Initialize(inputLayer, outputLayer);
             HiddenLayerList.get(neuron).clearInput(); //initialize then clear
         }
         //init rest of hidden layers
         for (int neuron = hiddenLayersWidth; neuron < hiddenLayersWidth * hiddenLayersDepth; neuron++) {
             HiddenLayerList.add(new VariableNeuron());
             HiddenLayerList.get(neuron).setInput(new ArrayList<>(Collections.nCopies(hiddenLayersWidth, 0.0)));
-            HiddenLayerList.get(neuron).Initialize();
-            //HiddenLayerList.get(neuron).safeInitializeWeights(hiddenLayersWidth);
+            HiddenLayerList.get(neuron).Initialize(inputLayer, outputLayer);
+            //HiddenLayerList.get(neuron).Initialize(inputLayer, outputLayer);
             HiddenLayerList.get(neuron).clearInput();
         }
         //init for output layer
         for (int neuron = 0; neuron < outputLayer; neuron++) {
             OutputLayerList.add(new VariableNeuron());
             OutputLayerList.get(neuron).setInput(new ArrayList<>(Collections.nCopies(hiddenLayersWidth, 0.0)));
-            OutputLayerList.get(neuron).Initialize();
+            OutputLayerList.get(neuron).Initialize(inputLayer, outputLayer);
             OutputLayerList.get(neuron).clearInput();
 
         }
@@ -199,7 +199,7 @@ public class VariableNetwork {
     public void train(List<Double[]> values, List<Double[]> answers) {
         this.values = values;
         this.answers = answers;
-        double learningRate = 0.0001;
+        double learningRate = 0.001;
         for (int epoch = 0; epoch < 1000; epoch++) {
             for (int sample = 0; sample < values.size(); sample++) {
                 //  System.out.println("sample: " + sample);
@@ -258,7 +258,7 @@ public class VariableNetwork {
                 for (int i = 0; i < outputLayer; i++) {
                     VariableNeuron neuron = OutputLayerList.get(i);
                     if (neuron.getWeights().size() != neuron.getInput().size()) {
-                        neuron.Initialize();
+                        neuron.Initialize(inputLayer, outputLayer);
                     }
 
                     List<Double> newOutputWeights = new ArrayList<>();
@@ -287,7 +287,7 @@ public class VariableNetwork {
                         List<Double> newWeights = new ArrayList<>();
                         if (neuron.getWeights().isEmpty() || neuron.getWeights().size() != expectedInputSize) {
                             neuron.setInput(new ArrayList<>(hiddenOutput.get(layer - 1)));
-                            neuron.Initialize();
+                            neuron.Initialize(inputLayer, outputLayer);
                         }
                         for (int prevIndex = 0; prevIndex < expectedInputSize; prevIndex++) { //neuron before
                             double oldWeight = neuron.getWeights().get(prevIndex);
@@ -306,7 +306,7 @@ public class VariableNetwork {
                     VariableNeuron neuron = HiddenLayerList.get(i);
                     if (neuron.getWeights().size() != inputLayer) {
                         neuron.setInput(new ArrayList<>(Arrays.asList(inputLayerOutput)));
-                        neuron.Initialize();
+                        neuron.Initialize(inputLayer, outputLayer);
                     }
 
                     List<Double> newWeights = new ArrayList<>();
