@@ -2,7 +2,7 @@ package com.rubfiber.network;
 
 import java.util.*;
 
-public class RobotDataGenerator {
+public class GreaterNumberGenerator {
     public static void main(String[] args) {
         Random rand = new Random();
         List<List<Double>> listRobotTrainData = new ArrayList<>();
