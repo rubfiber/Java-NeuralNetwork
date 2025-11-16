@@ -1,12 +1,14 @@
 package rubfiber.network;
 
+import java.io.*;
 import java.util.*;
+import com.google.gson.*;
+import com.google.gson.annotations.Expose;
+import rubfiber.network.networkState.SavedNetworkState;
 
 public class VariableNetwork {
-    public int hiddenLayersWidth;
-    public int hiddenLayersDepth;
-    public int inputLayer;
-    public int outputLayer;
+    @Expose
+        public int hiddenLayersWidth, hiddenLayersDepth, inputLayer, outputLayer; //for gson
     List<InputVariableNeuron> InputLayerList = new ArrayList<>(); //list for input neurons
     List<VariableNeuron> HiddenLayerList = new ArrayList<>();
     List<VariableNeuron> OutputLayerList = new ArrayList<>();
@@ -98,6 +100,7 @@ public class VariableNetwork {
         biases.add(outputBiasList);
         return biases;
     }
+
     public void setBias(List<List<Double>> newBiases) {
         for (int i = 0; i < hiddenLayersDepth; i++) {
             List<Double> currentLayerBiases = new ArrayList<>(newBiases.get(i));
@@ -110,6 +113,7 @@ public class VariableNetwork {
             OutputLayerList.get(i).setBias(outputBiasList.get(i));
         }
     }
+
     public void setWeights(List<List<List<Double>>> newWeights) {
         for (int i = 0; i < hiddenLayersDepth; i++) {
             List<List<Double>> currentHiddenLayerWeights = new ArrayList<>(newWeights.get(i));
@@ -123,6 +127,8 @@ public class VariableNetwork {
             OutputLayerList.get(i).setWeights(outputWeightList.get(i));
         }
     }
+
+
     Double[] inputLayerOutput;
 
     Double[] outputLayerOutput;
@@ -348,4 +354,45 @@ public class VariableNetwork {
         return Arrays.asList(outputs);
     }
 
+
+    public void saveNetworkState(String outputFile) {
+        SavedNetworkState state = new SavedNetworkState();
+        state.hiddenLayersWidth = this.hiddenLayersWidth;
+        state.hiddenLayersDepth = this.hiddenLayersDepth;
+        state.inputLayer = this.inputLayer;
+        state.outputLayer = this.outputLayer;
+        state.biases = this.getBias();
+        state.weights = this.getWeights();
+
+        Gson gson = new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation()
+                .setPrettyPrinting()
+                .create();
+
+        try (FileWriter writer = new FileWriter(outputFile)) {
+            gson.toJson(state, writer);
+            System.out.println("Successfully saved network state.");
+        } catch (IOException e) {
+            System.err.println("Error writing to file: " + e.getMessage());
+        }
+    }
+    public void loadNetworkState(String filePath) {
+        File file = new File(filePath);
+        System.out.println(file.getParentFile().mkdirs());
+        Gson gson = new GsonBuilder()
+                .excludeFieldsWithoutExposeAnnotation()
+                .create();
+
+        try (FileReader reader = new FileReader(filePath)) {
+            SavedNetworkState savedNetworkState = gson.fromJson(reader, SavedNetworkState.class);
+            this.setBias(savedNetworkState.biases);
+            this.setWeights(savedNetworkState.weights);
+            this.hiddenLayersDepth = savedNetworkState.hiddenLayersDepth;
+            this.hiddenLayersWidth = savedNetworkState.hiddenLayersWidth;
+            this.inputLayer = savedNetworkState.inputLayer;
+            this.outputLayer = savedNetworkState.outputLayer; //loaded everything
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
+    }
 }
