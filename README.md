@@ -25,6 +25,6 @@ Use the train() method each one has to train the network. You must input a list 
 If the network is outputting wrong answers consistently after training, then you may need to update the learningRate variable within the train() method.
 # Known bugs and issues
 
-- There is currently an issue with bias updating when training that makes the network give an incorrect output. Giving the same network different input data also results in a prediction extremely similar to the first. This is likely an error in updating deltas, but I'm not sure.
+- There is currently an issue with weights exploding when training that makes the network give an incorrect output. Giving the same network different input data also results in a prediction extremely similar to the first. This is likely an error in updating deltas, but I'm not sure.
 - Pretty inefficient
 
