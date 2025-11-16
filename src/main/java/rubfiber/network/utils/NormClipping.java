@@ -1,4 +1,4 @@
-package com.rubfiber.network.utils;
+package rubfiber.network.utils;
 
 import java.lang.Math;
 import java.util.Arrays;

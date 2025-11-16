@@ -1,4 +1,4 @@
-package com.rubfiber.network;
+package rubfiber.network;
 
 import java.util.*;
 
