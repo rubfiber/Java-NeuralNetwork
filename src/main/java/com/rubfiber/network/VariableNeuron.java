@@ -33,7 +33,7 @@ public class VariableNeuron { //For neurons
     List<Double> input = new ArrayList<>(); //input as list
     List<Double> weights = new ArrayList<>();
 
-    public void Initialize() {
+    public void Initialize(int numInputs, int numOutputs) {
         bias = 0.0;
         weights.clear();
 
@@ -41,20 +41,9 @@ public class VariableNeuron { //For neurons
             throw new IllegalStateException("Neuron inputs not set before initialization");
         }
             for (int i = 0; i < input.size(); i++) {
-                weights.add(random.nextGaussian() * Math.sqrt(2.0 / input.size())); // He init
+                double limit = Math.sqrt(6.0 / (numInputs + numOutputs));
+                weights.add(random.nextDouble(-limit, limit)); // xavier init
         }
-    }
-    public void safeInitializeWeights(int size) {
-        if (size <= 0) throw new IllegalArgumentException("size must be > 0");
-        if (weights != null && weights.size() == size) return; // already ok
-
-        List<Double> newW = new ArrayList<>(size);
-        for (int i = 0; i < size; i++) {
-            // He init
-            newW.add(random.nextGaussian() * Math.sqrt(2.0 / size));
-        }
-        this.weights = newW;
-        if (Double.isNaN(bias) || Double.isInfinite(bias)) bias = 0.01;
     }
 
 
@@ -78,9 +67,9 @@ public class VariableNeuron { //For neurons
 
         double activated;
         if (isOutputLayer) {
-            activated = sigmoid(sum);
+            activated = Math.tanh(sum);
         } else {
-            activated = Math.tanh(sum); // nonlinearity that keeps variance alive
+            activated = sigmoid(sum);
         }
 
         if (Double.isNaN(activated) || Double.isInfinite(activated))
@@ -89,11 +78,10 @@ public class VariableNeuron { //For neurons
         return activated;
     }
 
-    private double relu(double x) {return (x > 0) ? x : 0.01 * x;
+    private double relu(double x) {return (x > 0) ? x : 0.01 * x; //not used for testing
     }
 
     private double sigmoid(double x) {
-        // Numerically stable sigmoid to avoid overflow/underflow
         if (x >= 0) {
             double z = Math.exp(-x);
             return 1 / (1 + z);
