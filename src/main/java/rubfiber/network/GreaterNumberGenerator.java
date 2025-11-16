@@ -78,5 +78,8 @@ public class GreaterNumberGenerator {
         input = new Double[]{rand.nextDouble(), rand.nextDouble(), rand.nextDouble()};
         input = new Double[]{0.01, 0.99, 0.5};
         System.out.println(Arrays.toString(newNetwork.Predict(input)) + " input: " + Arrays.toString(input));
+
+        newNetwork.saveNetworkState("src/main/resources/networkState.json");
+        newNetwork.loadNetworkState("src/main/resources/networkState.json");
     }
 }
