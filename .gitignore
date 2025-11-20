@@ -35,5 +35,4 @@ Thumbs.db
 # =========================
 # Dependency caches
 # =========================
-# Uncomment if you don't want to commit downloaded dependencies
 .m2/
