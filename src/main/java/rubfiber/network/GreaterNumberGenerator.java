@@ -41,9 +41,9 @@ public class GreaterNumberGenerator {
         TestNetwork neuralNetwork = new TestNetwork();
         neuralNetwork.train(listRobotTrainData, listRobotAnswers);
 
-        VariableNetwork variableNetwork = new VariableNetwork(3, 3, 6,6, new Double[]{0.0, 0.0, 0.0});
+        VariableNetwork variableNetwork = new VariableNetwork(3, 3, 6,6);
         variableNetwork.train(arrayRobotTrainData, arrayRobotAnswers);
-        System.out.println("Trained fixed network robot prediction: " + neuralNetwork.predict(0.12, 0.007656, 0.99) + "\n");
+        System.out.println("Trained fixed network greatest number prediction: " + neuralNetwork.predict(0.12, 0.007656, 0.99) + "\n");
 
         Double[] input = new Double[]{rand.nextDouble(), rand.nextDouble(), rand.nextDouble()};
 
@@ -72,7 +72,7 @@ public class GreaterNumberGenerator {
 
         System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
-        VariableNetwork newNetwork = new VariableNetwork(3, 3, 6, 6, new Double[]{0.0, 0.0, 0.0});
+        VariableNetwork newNetwork = new VariableNetwork(3, 3, 6, 6);
         newNetwork.loadNetworkState("src/main/resources/networkState.json");
 
         input = new Double[]{rand.nextDouble(), rand.nextDouble(), rand.nextDouble()};

@@ -12,14 +12,8 @@ public class Example {
         System.out.println("Random prediction for Robot: " + RobotPrediction);
         Double[] input = new Double[]{0.41, 0.85, 0.23};
 
-        VariableNetwork nn = new VariableNetwork(3, 9, 83, 45, input);
+        VariableNetwork nn = new VariableNetwork(3, 9, 83, 45);
         System.out.println(Arrays.toString(nn.Predict(input)));
-
-        VariableNeuron Neuron = new VariableNeuron();
-        List<Double> inputLarge = new ArrayList<>();
-        inputLarge.add(5747.0);
-        inputLarge.add(949.0);
-        inputLarge.add(5932.0);
 
     }
 

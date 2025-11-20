@@ -8,7 +8,7 @@ import rubfiber.network.networkState.SavedNetworkState;
 
 public class VariableNetwork {
     @Expose
-        public int hiddenLayersWidth, hiddenLayersDepth, inputLayer, outputLayer; //for gson
+    public int hiddenLayersWidth, hiddenLayersDepth, inputLayer, outputLayer; //for gson
     List<InputVariableNeuron> InputLayerList = new ArrayList<>(); //list for input neurons
     List<VariableNeuron> HiddenLayerList = new ArrayList<>();
     List<VariableNeuron> OutputLayerList = new ArrayList<>();
@@ -19,11 +19,10 @@ public class VariableNetwork {
      * @param outputLayer The output layer size
      * @param hiddenLayersWidth The width of the hidden layers
      * @param hiddenLayersDepth The depth of the hidden layers
-     * @param input The input of the network - must be the same ize as the number of input neurons
      */
 
 
-    VariableNetwork(int inputLayer, int outputLayer, int hiddenLayersWidth, int hiddenLayersDepth, Double[] input) {
+    public VariableNetwork(int inputLayer, int outputLayer, int hiddenLayersWidth, int hiddenLayersDepth) {
         this.inputLayer = inputLayer;
         this.outputLayer = outputLayer;
         this.hiddenLayersWidth = hiddenLayersWidth;
@@ -31,7 +30,7 @@ public class VariableNetwork {
 
         //init input layer
         for (int neuron = 0; neuron < inputLayer; neuron++) {
-            InputLayerList.add(new InputVariableNeuron(input[neuron]));
+            InputLayerList.add(new InputVariableNeuron((double) neuron)); //temporary
             InputLayerList.get(neuron).Initialize(inputLayer, outputLayer);
             //InputLayerList.get(neuron).Initialize(inpuLayer, outputLayer);
         }
@@ -206,7 +205,8 @@ public class VariableNetwork {
         this.values = values;
         this.answers = answers;
         double learningRate = 0.001;
-        for (int epoch = 0; epoch < 1000; epoch++) {
+        for (int epoch = 0; epoch < 200; epoch++) {
+            System.out.println(epoch);
             for (int sample = 0; sample < values.size(); sample++) {
                 //  System.out.println("sample: " + sample);
                 randomAnswer = random.nextInt(values.size());
@@ -232,8 +232,8 @@ public class VariableNetwork {
                         double weight = OutputLayerList.get(j).getWeights().get(i); //ith value in the weight list
                         lastHiddenSum += outputDelta.get(j) * weight;
                     }
-                   // double delta = Math.max(-1.0, Math.min(1.0, lastHiddenSum * hiddenOutput.get(hiddenLayersDepth - 1).get(i) *(1 - hiddenOutput.get(hiddenLayersDepth - 1).get(i))));
-                        double delta = lastHiddenSum * hiddenOutput.get(hiddenLayersDepth - 1).get(i) * (1 - hiddenOutput.get(hiddenLayersDepth - 1).get(i));
+                    // double delta = Math.max(-1.0, Math.min(1.0, lastHiddenSum * hiddenOutput.get(hiddenLayersDepth - 1).get(i) *(1 - hiddenOutput.get(hiddenLayersDepth - 1).get(i))));
+                    double delta = lastHiddenSum * hiddenOutput.get(hiddenLayersDepth - 1).get(i) * (1 - hiddenOutput.get(hiddenLayersDepth - 1).get(i));
                     lastHiddenDelta.add(delta);
                     HiddenLayerList.get(hiddenLayersWidth * (hiddenLayersDepth - 1) + i).setBias(HiddenLayerList.get(hiddenLayersWidth * (hiddenLayersDepth - 1) + i).getBias() - learningRate * delta);  //i-th value of last hidden layer
                     double newBias = HiddenLayerList.get(hiddenLayersWidth * (hiddenLayersDepth - 1) + i).getBias() - learningRate * delta;
