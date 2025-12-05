@@ -196,7 +196,10 @@ public class VariableNetwork {
         }
         return outputLayerOutput;
     }
-
+    double learningRate = 0.001;
+    public void setLearningRate(double newLearningRate) {
+        learningRate = newLearningRate;
+    }
     Random random = new Random();
     int randomAnswer;
     List<Double[]> values = new ArrayList<>();
@@ -204,7 +207,6 @@ public class VariableNetwork {
     public void train(List<Double[]> values, List<Double[]> answers) {
         this.values = values;
         this.answers = answers;
-        double learningRate = 0.001;
         for (int epoch = 0; epoch < 200; epoch++) {
             System.out.println(epoch);
             for (int sample = 0; sample < values.size(); sample++) {
